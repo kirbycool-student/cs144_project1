@@ -1,7 +1,8 @@
-import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -14,6 +15,8 @@ public class ComputeSHA {
 		}
 		
 		byte[] contents = null;
+		
+		/*
 		Path file = null;
 		
 		try {
@@ -30,6 +33,26 @@ public class ComputeSHA {
 			System.err.println( "There was an error reading the file.");
 			System.exit(1);
 		}
+		*/
+		File file = new File( args[0] );
+		InputStream f = null;
+		
+		try {
+			f = new FileInputStream( file );
+		} catch (FileNotFoundException e) {
+			System.err.println("Invalid Path. Make sure the file path is available.");
+			System.exit(1);
+		}
+		
+		contents = new byte[(int) file.length()];
+		
+		try {
+			f.read(contents);
+		} catch (IOException e) {
+			System.err.println( "There was an error reading the file.");
+			System.exit(1);
+		}
+		
 		
 		//compute the hash
 		byte[] hash;
